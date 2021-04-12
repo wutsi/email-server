@@ -38,9 +38,11 @@ public class SendDelegate(
 
     public fun invoke(request: SendEmailRequest) {
         if (isUnsubscribed(request)) {
-            LOGGER.info("site_id=${request.siteId} recipient_email=${request.recipient.email} - User has unsubscribed from the list")
+            LOGGER.info("site_id=${request.siteId} campaign=${request.campaign} recipient_email=${request.recipient.email} - User has unsubscribed from the list")
             return
         }
+
+        LOGGER.info("site_id=${request.siteId} campaign=${request.campaign} recipient_email=${request.recipient.email} - Sending email")
         val site = siteApi.get(request.siteId).site
         val message = createMessage(request, site)
         sender.send(message)

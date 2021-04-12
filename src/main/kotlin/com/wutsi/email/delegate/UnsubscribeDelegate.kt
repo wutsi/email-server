@@ -23,10 +23,11 @@ public class UnsubscribeDelegate(
     ) {
         val item = dao.findBySiteIdAndUserIdAndEmailIgnoreCase(siteId, userId, email)
         if (item.isPresent) {
-            LOGGER.info("site_id=$siteId email=$email user_id=$userId - Email already removed from the list")
+            LOGGER.info("site_id=$siteId user_id=$userId email=$email - Email already removed from the mailing list")
             return
         }
 
+        LOGGER.info("site_id=$siteId user_id=$userId email=$email - Unsubscribing from mailing list")
         dao.save(
             Unsubscribed(
                 siteId = siteId,
@@ -34,6 +35,5 @@ public class UnsubscribeDelegate(
                 userId = userId
             )
         )
-        LOGGER.info("site_id=$siteId email=$email user_id=$userId - Email removed from the list")
     }
 }

@@ -11,10 +11,10 @@ spring:
     password: ${SPRING_DATABASE_PASSWORD}
 
   mail:
-    host: ${SES_SMTP_HOST}
-    port: ${SES_SMTP_PORT}
-    username: ${SES_SMTP_USERNAME}
-    password: ${SES_SMTP_PASSWORD}
+    host: ${SMTP_HOST}
+    port: ${SMTP_PORT}
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
 
 rabbitmq:
   enabled: true
