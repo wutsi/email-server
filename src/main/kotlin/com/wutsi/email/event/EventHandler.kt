@@ -1,5 +1,6 @@
 package com.wutsi.email.event
 
+import com.wutsi.email.delegate.SendDelegate
 import com.wutsi.email.delegate.UnsubscribeDelegate
 import com.wutsi.stream.Event
 import com.wutsi.stream.ObjectMapperBuilder
@@ -8,7 +9,10 @@ import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
 
 @Service
-class EventHandler(private val delegate: UnsubscribeDelegate) {
+class EventHandler(
+    private val unsubscribeDelegate: UnsubscribeDelegate,
+    private val sendDelegate: SendDelegate
+) {
     companion object {
         private val LOGGER = LoggerFactory.getLogger(EventHandler::class.java)
     }
@@ -18,14 +22,25 @@ class EventHandler(private val delegate: UnsubscribeDelegate) {
         LOGGER.info("onEvent($event)")
 
         if (event.type == EmailEventType.UNSUBSCRIPTION_SUBMITTED.urn) {
-            val payload = ObjectMapperBuilder().build().readValue(event.payload, UnsubscriptionRequestedEventPayload::class.java)
-            delegate.invoke(
-                siteId = payload.siteId,
-                email = payload.email,
-                userId = payload.userId
-            )
+            onUnsubscription(event)
+        } else if (event.type == EmailEventType.DELIVERY_SUBMITTED.urn) {
+            onDelivery(event)
         } else {
             LOGGER.info("Event Ignored")
         }
+    }
+
+    private fun onUnsubscription(event: Event) {
+        val payload = ObjectMapperBuilder().build().readValue(event.payload, UnsubscriptionSubmittedEventPayload::class.java)
+        unsubscribeDelegate.invoke(
+            siteId = payload.siteId,
+            email = payload.email,
+            userId = payload.userId
+        )
+    }
+
+    private fun onDelivery(event: Event) {
+        val payload = ObjectMapperBuilder().build().readValue(event.payload, DeliverySubmittedEventPayload::class.java)
+        sendDelegate.invoke(payload.request)
     }
 }

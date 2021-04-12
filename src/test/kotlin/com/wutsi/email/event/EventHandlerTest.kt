@@ -1,20 +1,25 @@
 package com.wutsi.email.event
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
+import com.wutsi.email.delegate.SendDelegate
 import com.wutsi.email.delegate.UnsubscribeDelegate
+import com.wutsi.email.dto.SendEmailRequest
 import com.wutsi.stream.Event
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 internal class EventHandlerTest {
-    private lateinit var delegate: UnsubscribeDelegate
+    private lateinit var unsubscribeDelegate: UnsubscribeDelegate
+    private lateinit var sendDelegate: SendDelegate
     private lateinit var handler: EventHandler
 
     @BeforeEach
     fun setUp() {
-        delegate = mock()
-        handler = EventHandler(delegate)
+        unsubscribeDelegate = mock()
+        sendDelegate = mock()
+        handler = EventHandler(unsubscribeDelegate, sendDelegate)
     }
 
     @Test
@@ -32,6 +37,19 @@ internal class EventHandlerTest {
 
         handler.onEvent(event)
 
-        verify(delegate).invoke(11L, "ray.sponsible@gmail.com", 111L)
+        verify(unsubscribeDelegate).invoke(11L, "ray.sponsible@gmail.com", 111L)
+    }
+
+    @Test
+    fun `handle email event`() {
+        val request = SendEmailRequest()
+        val event = Event(
+            type = EmailEventType.DELIVERY_SUBMITTED.urn,
+            payload = ObjectMapper().writeValueAsString(DeliverySubmittedEventPayload(request))
+        )
+
+        handler.onEvent(event)
+
+        verify(sendDelegate).invoke(request)
     }
 }
