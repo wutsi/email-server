@@ -10,8 +10,8 @@ spring:
     username: ${SPRING_DATABASE_USERNAME}
     password: ${SPRING_DATABASE_PASSWORD}
 
-  mail:
-    host: ${MAILGUN_DOMAIN}
+  mail: # We a using the free-tier Mailgun add-on in TEST environment
+    host: ${MAILGUN_SMTP_SERVER}
     port: ${MAILGUN_SMTP_PORT}
     username: ${MAILGUN_SMTP_LOGIN}
     password: ${MAILGUN_SMTP_PASSWORD}

@@ -15,7 +15,7 @@ java -jar ${CODEGEN_JAR} server \
     -package com.wutsi.${API_NAME} \
     -jdk 11 \
     -github_user ${GITHUB_USER} \
-    -github_project ${API_NAME}-server-kotlin \
+    -github_project ${API_NAME}-server \
     -heroku wutsi-${API_NAME} \
     -service_logger \
     -service_database \

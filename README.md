@@ -1,4 +1,4 @@
-[![](https://github.com/wutsi/email-server-kotlin/actions/workflows/master.yml/badge.svg)](https://github.com/wutsi/email-server-kotlin/actions/workflows/master.yml)
+[![](https://github.com/wutsi/email-server/actions/workflows/master.yml/badge.svg)](https://github.com/wutsi/email-server/actions/workflows/master.yml)
 
 [![JDK](https://img.shields.io/badge/jdk-11-brightgreen.svg)](https://jdk.java.net/11/)
 [![](https://img.shields.io/badge/maven-3.6-brightgreen.svg)](https://maven.apache.org/download.cgi)
@@ -43,12 +43,12 @@ API for sending emails.&#10;
 ## Usage
 - Install
 ```
-$ git clone git@github.com:wutsi/email-server-kotlin.git
+$ git clone git@github.com:wutsi/email-server.git
 ```
 
 - Build
 ```
-$ cd email-server-kotlin
+$ cd email-server
 $ mvn clean install
 ```
 
@@ -60,5 +60,5 @@ $ mvn spring-boot:run
 That's it... the API is up and running! Start sending requests :-)
 
 # Links
-- [API](https://wutsi.github.io/email-server-kotlin/api/)
+- [API](https://wutsi.github.io/email-server/api/)
 - [Documentation](docs/)
