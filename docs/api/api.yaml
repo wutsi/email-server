@@ -1,0 +1,107 @@
+openapi: 3.0.0
+info:
+  title: Wutsi Email API
+  description: |
+    API for sending emails.
+  version: 1.0.0
+servers:
+  - url: 'https://wutsi-mail-test.herokuapp.com'
+    description: Sandbox
+  - url: 'https://wutsi-mail-prod.herokuapp.com'
+    description: Production
+paths:
+  /v1/emails:
+    post:
+      operationId: send
+      summary: Send and email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendEmailRequest'
+      responses:
+        '200':
+          description: Success
+      tags:
+        - Email
+  '/v1/sites/{site-id}/list/members':
+    delete:
+      operationId: unsubscribe
+      summary: Unsubscribe an email from a mailing list
+      parameters:
+        - in: path
+          name: site-id
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - in: query
+          name: email
+          description: Email to remove from the list
+          required: true
+          schema:
+            type: string
+            format: email
+        - in: query
+          name: user-id
+          description: |
+            ID of owner of the list. If not provided, the user will be removed from the site mailing list.
+          schema:
+            type: integer
+            format: int64
+            nullable: true
+      responses:
+        '200':
+          description: Success
+      tags:
+        - Mailing List
+components:
+  schemas:
+    SendEmailRequest:
+      type: object
+      properties:
+        siteId:
+          type: integer
+          format: int64
+          example: 1
+        sender:
+          type: object
+          $ref: '#/components/schemas/Sender'
+        recipient:
+          type: object
+          $ref: '#/components/schemas/Address'
+        subject:
+          type: string
+        body:
+          type: string
+        contentType:
+          type: string
+        campaign:
+          type: string
+          nullable: true
+      required:
+        - siteId
+        - subject
+        - recipient
+        - contentType
+    Sender:
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+          example: 1
+          nullable: true
+    Address:
+      type: object
+      properties:
+        displayName:
+          type: string
+          nullable: true
+        email:
+          type: string
+          format: email
+      required:
+        - email
