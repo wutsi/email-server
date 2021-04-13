@@ -90,7 +90,7 @@ internal class SendControllerTest {
         assertEquals("test-campaign", message.getHeader(SendDelegate.HEADER_CAMPAIGN)[0])
         assertEquals("List-Unsubscribe=One-Click", message.getHeader("List-Unsubscribe-Post")[0])
         assertEquals(
-            "<mailto:unsubscribe.test.com>,<https://www.test.com/unsubscribe&email=ray.sponsible@gmail.com>",
+            "<mailto:unsubscribe@test.com>,<https://www.test.com/unsubscribe?email=ray.sponsible@gmail.com>",
             message.getHeader("List-Unsubscribe")[0]
         )
     }
@@ -203,33 +203,14 @@ internal class SendControllerTest {
             contentType = "text/html",
             subject = "test",
             campaign = "c001",
-            body = """
-                <body>
-                    %RECIPIENT_NAME%
-                    <a href="%WEBSITE_URL%/home">Home</a>
-                    <a href="https://espn.com/1.html">Espn</a>
-
-                    <hr/>
-                    <a href="%UNSUBSCRIBE_URL%">Unsubscribe</a>
-                </body>
-            """.trimIndent()
+            body = "Hello world".trimIndent()
         )
         rest.postForEntity(url, request, Any::class.java)
 
         val body = IOUtils.toString(smtp.receivedMessages[0].inputStream)
-        assertEquals(
-            """
-                <body>
-                    Ray Sponsible
-                    <a href="https://www.test.com/home?utm_source=email&utm_campaign=c001">Home</a>
-                    <a href="https://espn.com/1.html?utm_source=email&utm_campaign=c001">Espn</a>
-
-                    <hr/>
-                    <a href="https://www.test.com/unsubscribe&email=ray.sponsible@gmail.com&u=2?utm_source=email&utm_campaign=c001">Unsubscribe</a>
-                </body>
-            """.trimIndent(),
-            body.trimIndent()
-        )
+        val expected = IOUtils.toString(SendControllerTest::class.java.getResourceAsStream("/SendController/email.html"), "utf-8")
+        // assertEquals(expected.trimIndent(), body.trimIndent())
+        System.out.println(expected)
     }
 
     private fun createSendEmailRequest(
@@ -248,7 +229,7 @@ internal class SendControllerTest {
     private fun createSite(
         id: Long = 1L,
         attributes: List<Attribute> = listOf(
-            Attribute(SiteAttribute.UNSUBSCRIBED_EMAIL.urn, "unsubscribe.test.com"),
+            Attribute(SiteAttribute.UNSUBSCRIBED_EMAIL.urn, "unsubscribe@test.com"),
             Attribute(SiteAttribute.UNSUBSCRIBED_URL.urn, "https://www.test.com/unsubscribe"),
             Attribute(SiteAttribute.FROM.urn, "no-reply@test.com")
         )
