@@ -1,5 +1,6 @@
 package com.wutsi.email.config
 
+import com.wutsi.newsletter.event.NewsletterEventStream
 import com.wutsi.stream.EventStream
 import com.wutsi.stream.EventSubscription
 import org.springframework.context.annotation.Bean
@@ -14,4 +15,7 @@ public class MQueueConfiguration(
 
     @Bean
     fun wutsiBlogServiceSubscription() = EventSubscription("wutsi-blog-service", eventStream)
+
+    @Bean
+    fun newsletterServiceSubscription() = EventSubscription(NewsletterEventStream.NAME, eventStream)
 }
