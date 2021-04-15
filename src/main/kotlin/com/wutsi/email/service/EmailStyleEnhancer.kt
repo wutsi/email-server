@@ -2,6 +2,7 @@ package com.wutsi.email.service
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import org.jsoup.nodes.Entities.EscapeMode.extended
 import org.springframework.stereotype.Service
 
 @Service
@@ -57,9 +58,12 @@ class EmailStyleEnhancer {
         STYLES.keys.forEach {
             apply(it, doc)
         }
-        doc.outputSettings().indentAmount(2)
-        doc.outputSettings().prettyPrint(true)
-        doc.outputSettings().outline(true)
+        doc.outputSettings()
+            .charset("ASCII")
+            .escapeMode(extended)
+            .indentAmount(2)
+            .prettyPrint(true)
+            .outline(true)
         return doc.toString()
     }
 
