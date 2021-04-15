@@ -20,7 +20,7 @@ internal class EmailBodyComposerTest {
     fun defaultTemplate() {
         val site = createSite()
         val request = SendEmailRequest(
-            body = "Hello <a href='https://www.google.com'>World</a>",
+            body = IOUtils.toString(EmailBodyComposerTest::class.java.getResourceAsStream("/EmailBodyComposer/body.html"), "utf-8"),
             recipient = Address("Ray Sponsible", "ray.sponsible@gmail.com"),
             sender = Sender(userId = 33),
             siteId = 1,
@@ -29,9 +29,15 @@ internal class EmailBodyComposerTest {
         )
         val content = composer.compose(request, site, "default")
 
-        val expected = IOUtils.toString(EmailBodyComposerTest::class.java.getResourceAsStream("/EmailBodyComposer/default.html"), "utf-8")
-        assertEquals(expected.trimIndent(), content.trimMargin())
+        println(content)
+        val expected = IOUtils.toString(EmailBodyComposerTest::class.java.getResourceAsStream("/EmailBodyComposer/email.html"), "utf-8")
+        assertEquals(sanitizeHtml(expected), sanitizeHtml(content))
     }
+
+    private fun sanitizeHtml(html: String): String =
+        html.replace("\\s+".toRegex(), " ")
+            .trimIndent()
+            .trim()
 
     private fun createSite(
         id: Long = 1L,
