@@ -73,10 +73,6 @@ public class SendDelegate(
         if (!request.campaign.isNullOrEmpty())
             message.addHeader(HEADER_CAMPAIGN, request.campaign)
 
-        LOGGER.info("--------------------------")
-        LOGGER.info("----- Request.body\n${request.body}")
-        LOGGER.info("--------------------------")
-        LOGGER.info("----- Email.body\n$body")
         return message
     }
 
