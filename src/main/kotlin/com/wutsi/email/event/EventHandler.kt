@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.context.event.EventListener
 import org.springframework.mail.MailException
 import org.springframework.stereotype.Service
+import javax.mail.MessagingException
 
 @Service
 class EventHandler(
@@ -45,20 +46,26 @@ class EventHandler(
         try {
             val payload = ObjectMapperBuilder().build().readValue(event.payload, DeliverySubmittedEventPayload::class.java)
             sendDelegate.invoke(payload.request)
-        } catch (ex: MailException) {
+        } catch (ex: MessagingException) {
             LOGGER.warn("Email delivery error", ex)
             handleException(ex)
+        } catch (ex: MailException) {
+            LOGGER.warn("Email delivery error", ex)
+            if (ex.cause != null)
+                handleException(ex.cause!!)
+            else
+                throw ex
         }
     }
 
     /**
      * Refer to https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes
      */
-    private fun handleException(ex: MailException) {
-        if (ex.cause !is SMTPSendFailedException)
+    private fun handleException(ex: Throwable) {
+        if (ex !is SMTPSendFailedException)
             throw ex
 
-        val returnCode = (ex.cause as SMTPSendFailedException).returnCode ?: throw ex
+        val returnCode = (ex as SMTPSendFailedException).returnCode ?: throw ex
         val errorCategory = returnCode / 100
         if (errorCategory == 4 || errorCategory == 5) {
             // Permanent error
