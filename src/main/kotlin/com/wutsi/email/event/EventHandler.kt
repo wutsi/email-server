@@ -22,7 +22,7 @@ class EventHandler(
 
     @EventListener
     fun onEvent(event: Event) {
-        LOGGER.info("onEvent(...)")
+        LOGGER.info("onEvent($event)")
 
         if (event.type == EmailEventType.UNSUBSCRIPTION_SUBMITTED.urn) {
             onUnsubscription(event)
