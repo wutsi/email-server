@@ -1,14 +1,21 @@
 package com.wutsi.email.event
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.doThrow
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
+import com.sun.mail.smtp.SMTPSendFailedException
 import com.wutsi.email.delegate.SendDelegate
 import com.wutsi.email.delegate.UnsubscribeDelegate
 import com.wutsi.email.dto.SendEmailRequest
 import com.wutsi.stream.Event
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import org.springframework.mail.MailException
+import org.springframework.mail.MailSendException
 
 internal class EventHandlerTest {
     private lateinit var unsubscribeDelegate: UnsubscribeDelegate
@@ -51,5 +58,48 @@ internal class EventHandlerTest {
         handler.onEvent(event)
 
         verify(sendDelegate).invoke(request)
+    }
+
+    @Test
+    fun `ignore 4xx email error code`() {
+        val request = SendEmailRequest()
+        val event = Event(
+            type = EmailEventType.DELIVERY_SUBMITTED.urn,
+            payload = ObjectMapper().writeValueAsString(DeliverySubmittedEventPayload(request))
+        )
+
+        doThrow(createMailException(421)).whenever(sendDelegate).invoke(any())
+
+        handler.onEvent(event)
+    }
+
+    @Test
+    fun `ignore 5xx email error code`() {
+        val request = SendEmailRequest()
+        val event = Event(
+            type = EmailEventType.DELIVERY_SUBMITTED.urn,
+            payload = ObjectMapper().writeValueAsString(DeliverySubmittedEventPayload(request))
+        )
+
+        doThrow(createMailException(500)).whenever(sendDelegate).invoke(any())
+
+        handler.onEvent(event)
+    }
+
+    @Test
+    fun `rethrow any error`() {
+        val request = SendEmailRequest()
+        val event = Event(
+            type = EmailEventType.DELIVERY_SUBMITTED.urn,
+            payload = ObjectMapper().writeValueAsString(DeliverySubmittedEventPayload(request))
+        )
+
+        doThrow(IllegalStateException::class).whenever(sendDelegate).invoke(any())
+
+        assertThrows<IllegalStateException> { handler.onEvent(event) }
+    }
+
+    private fun createMailException(returnCode: Int): MailException {
+        return MailSendException("Yo", SMTPSendFailedException("XxX", returnCode, "Man", null, emptyArray(), emptyArray(), emptyArray()))
     }
 }

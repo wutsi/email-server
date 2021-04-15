@@ -97,6 +97,7 @@
       <artifactId>commons-text</artifactId>
       <version>${commons-text.version}</version>
     </dependency>
+
     <dependency>
       <groupId>com.icegreen</groupId>
       <artifactId>greenmail</artifactId>
