@@ -171,6 +171,7 @@ internal class SendControllerTest {
             siteId = 100,
             recipient = Address("Ray Sponsible", "ray.sponsible@gmail.com"),
             contentType = "text/plain",
+            contentLanguage = "fr",
             body = "Yo man",
             subject = "test"
         )
@@ -186,6 +187,7 @@ internal class SendControllerTest {
             sender = Sender(userId = 2L),
             recipient = Address("Ray Sponsible", "ray.sponsible@gmail.com"),
             contentType = "text/plain",
+            contentLanguage = "fr",
             body = "Yo man",
             subject = "test"
         )
@@ -201,6 +203,7 @@ internal class SendControllerTest {
             sender = Sender(userId = 2L),
             recipient = Address("Ray Sponsible", "ray.sponsible@gmail.com"),
             contentType = "text/html",
+            contentLanguage = "fr",
             subject = "test",
             campaign = "c001",
             body = "Hello world".trimIndent()
