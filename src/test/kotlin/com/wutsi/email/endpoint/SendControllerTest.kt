@@ -221,6 +221,7 @@ internal class SendControllerTest {
         sender = Sender(userId = senderUserId),
         recipient = Address("Ray Sponsible", "ray.sponsible@gmail.com"),
         contentType = "text/plain",
+        contentLanguage = "fr",
         body = "Yo man",
         subject = "test",
         campaign = campaign
