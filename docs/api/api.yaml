@@ -78,6 +78,8 @@ components:
           type: string
         contentType:
           type: string
+        contentLanguage:
+          type: string
         campaign:
           type: string
           nullable: true
@@ -86,14 +88,15 @@ components:
         - subject
         - recipient
         - contentType
+        - contentLanguage
     Sender:
       type: object
       properties:
         userId:
           type: integer
           format: int64
-          example: 1
           nullable: true
+          example: 1
     Address:
       type: object
       properties:

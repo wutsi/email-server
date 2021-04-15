@@ -16,5 +16,7 @@ public data class SendEmailRequest(
     public val body: String = "",
     @get:NotBlank
     public val contentType: String = "",
+    @get:NotBlank
+    public val contentLanguage: String = "",
     public val campaign: String? = null
 )

@@ -58,6 +58,7 @@ public class SendDelegate(
         message.setFrom(from)
         message.sender = from
         message.subject = request.subject
+        message.contentLanguage = arrayOf(request.contentLanguage)
         message.setContent(body, request.contentType)
 
         if (!unsubscribeEmail.isNullOrEmpty() && !unsubscribeUrl.isNullOrEmpty()) {
