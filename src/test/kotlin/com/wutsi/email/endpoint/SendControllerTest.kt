@@ -210,7 +210,7 @@ internal class SendControllerTest {
         )
         rest.postForEntity(url, request, Any::class.java)
 
-        val body = IOUtils.toString(smtp.receivedMessages[0].inputStream)
+        IOUtils.toString(smtp.receivedMessages[0].inputStream)
         val expected = IOUtils.toString(SendControllerTest::class.java.getResourceAsStream("/SendController/email.html"), "utf-8")
         // assertEquals(expected.trimIndent(), body.trimIndent())
         System.out.println(expected)

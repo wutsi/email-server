@@ -61,32 +61,6 @@ internal class EventHandlerTest {
     }
 
     @Test
-    fun `ignore 4xx email error code`() {
-        val request = SendEmailRequest()
-        val event = Event(
-            type = EmailEventType.DELIVERY_SUBMITTED.urn,
-            payload = ObjectMapper().writeValueAsString(DeliverySubmittedEventPayload(request))
-        )
-
-        doThrow(createMailException(421)).whenever(sendDelegate).invoke(any())
-
-        handler.onEvent(event)
-    }
-
-    @Test
-    fun `ignore 5xx email error code`() {
-        val request = SendEmailRequest()
-        val event = Event(
-            type = EmailEventType.DELIVERY_SUBMITTED.urn,
-            payload = ObjectMapper().writeValueAsString(DeliverySubmittedEventPayload(request))
-        )
-
-        doThrow(createMailException(500)).whenever(sendDelegate).invoke(any())
-
-        handler.onEvent(event)
-    }
-
-    @Test
     fun `rethrow any error`() {
         val request = SendEmailRequest()
         val event = Event(

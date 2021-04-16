@@ -1,6 +1,5 @@
 package com.wutsi.email.event
 
-import com.sun.mail.smtp.SMTPSendFailedException
 import com.wutsi.email.delegate.SendDelegate
 import com.wutsi.email.delegate.UnsubscribeDelegate
 import com.wutsi.stream.Event
@@ -41,27 +40,7 @@ class EventHandler(
     }
 
     private fun onDelivery(event: Event) {
-        try {
-            val payload = ObjectMapperBuilder().build().readValue(event.payload, DeliverySubmittedEventPayload::class.java)
-            sendDelegate.invoke(payload.request)
-        } catch (ex: Exception) {
-            LOGGER.error("Email delivery error", ex)
-        }
-    }
-
-    /**
-     * Refer to https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes
-     */
-    private fun handleException(ex: Throwable) {
-        if (ex !is SMTPSendFailedException)
-            throw ex
-
-        val returnCode = (ex as SMTPSendFailedException).returnCode ?: throw ex
-        val errorCategory = returnCode / 100
-        if (errorCategory == 4 || errorCategory == 5) {
-            // Permanent error
-        } else {
-            throw ex
-        }
+        val payload = ObjectMapperBuilder().build().readValue(event.payload, DeliverySubmittedEventPayload::class.java)
+        sendDelegate.invoke(payload.request)
     }
 }
