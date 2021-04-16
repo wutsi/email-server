@@ -46,7 +46,7 @@
     <wutsi-stream-rabbitmq.version>1.2.0</wutsi-stream-rabbitmq.version>
     <wutsi-site-sdk.version>1.3.0</wutsi-site-sdk.version>
     <wutsi-tracing.version>1.2.0</wutsi-tracing.version>
-    <wutsi-user-sdk.version>1.3.0</wutsi-user-sdk.version>
+    <wutsi-user-sdk.version>1.4.0</wutsi-user-sdk.version>
   </properties>
 
   <dependencies>
