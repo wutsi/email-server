@@ -31,9 +31,9 @@ public class MQueueRemoteConfiguration(
     private val url: String,
     @Value(value = "\${rabbitmq.thread-pool-size}")
     private val threadPoolSize: Int,
-    @Value(value = "\${rabbitmq.rabbitmq.max-retries}")
+    @Value(value = "\${rabbitmq.max-retries}")
     private val maxRetries: Int,
-    @Value(value = "\${rabbitmq.rabbitmq.queue-ttl-seconds}")
+    @Value(value = "\${rabbitmq.queue-ttl-seconds}")
     private val queueTtlSeconds: Long
 ) {
     @Bean
