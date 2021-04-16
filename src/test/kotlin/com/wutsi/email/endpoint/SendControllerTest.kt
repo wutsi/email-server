@@ -86,7 +86,7 @@ internal class SendControllerTest {
         assertTrue(message.contentType.contains(request.contentType))
         assertTrue(body.contains("Yo man"))
 
-        assertEquals("ses-wutsi-1", message.getHeader(SendDelegate.HEADER_SES_CONFIGURATION_SET)[0])
+        assertEquals("ses-wutsi", message.getHeader(SendDelegate.HEADER_SES_CONFIGURATION_SET)[0])
         assertEquals("test-campaign", message.getHeader(SendDelegate.HEADER_CAMPAIGN)[0])
         assertEquals("List-Unsubscribe=One-Click", message.getHeader("List-Unsubscribe-Post")[0])
         assertEquals(

@@ -96,7 +96,7 @@ public class SendDelegate(
     }
 
     private fun sesConfigSet(site: Site): String? =
-        "ses-wutsi-${site.id}"
+        "ses-wutsi"
 
     private fun fromEmail(site: Site): String =
         site.attributes.find { it.urn == SiteAttribute.FROM.urn }?.value ?: this.from
