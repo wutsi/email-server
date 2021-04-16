@@ -7,9 +7,7 @@ import com.wutsi.stream.Event
 import com.wutsi.stream.ObjectMapperBuilder
 import org.slf4j.LoggerFactory
 import org.springframework.context.event.EventListener
-import org.springframework.mail.MailException
 import org.springframework.stereotype.Service
-import javax.mail.MessagingException
 
 @Service
 class EventHandler(
@@ -46,15 +44,8 @@ class EventHandler(
         try {
             val payload = ObjectMapperBuilder().build().readValue(event.payload, DeliverySubmittedEventPayload::class.java)
             sendDelegate.invoke(payload.request)
-        } catch (ex: MessagingException) {
-            LOGGER.warn("Email delivery error", ex)
-            handleException(ex)
-        } catch (ex: MailException) {
-            LOGGER.warn("Email delivery error", ex)
-            if (ex.cause != null)
-                handleException(ex.cause!!)
-            else
-                throw ex
+        } catch (ex: Exception) {
+            LOGGER.error("Email delivery error", ex)
         }
     }
 
