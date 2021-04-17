@@ -97,6 +97,9 @@ components:
           format: int64
           nullable: true
           example: 1
+        fullName:
+          type: string
+          nullable: true
     Address:
       type: object
       properties:

@@ -14,9 +14,6 @@ import com.wutsi.site.SiteApi
 import com.wutsi.site.dto.Attribute
 import com.wutsi.site.dto.GetSiteResponse
 import com.wutsi.site.dto.Site
-import com.wutsi.user.UserApi
-import com.wutsi.user.dto.GetUserResponse
-import com.wutsi.user.dto.User
 import org.apache.commons.io.IOUtils
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -43,9 +40,6 @@ internal class SendControllerTest {
     private val rest: RestTemplate = RestTemplate()
 
     @MockBean
-    private lateinit var userApi: UserApi
-
-    @MockBean
     private lateinit var siteApi: SiteApi
 
     private var smtp: GreenMail = GreenMail(ServerSetup(2525, null, "smtp"))
@@ -59,9 +53,6 @@ internal class SendControllerTest {
 
         val site = createSite()
         doReturn(GetSiteResponse(site)).whenever(siteApi).get(any())
-
-        val user = createUser()
-        doReturn(GetUserResponse(user)).whenever(userApi).get(any())
     }
 
     @AfterEach
@@ -142,7 +133,7 @@ internal class SendControllerTest {
 
     @Test
     fun `sender displayName in FROM when provided in the request`() {
-        val request = createSendEmailRequest(senderUserId = 1)
+        val request = createSendEmailRequest(senderFullname = "Roger Milla")
         rest.postForEntity(url, request, Any::class.java)
 
         assertEquals(InternetAddress("no-reply@test.com", "Roger Milla"), smtp.receivedMessages[0].sender)
@@ -218,10 +209,11 @@ internal class SendControllerTest {
 
     private fun createSendEmailRequest(
         campaign: String? = null,
-        senderUserId: Long? = null
+        senderUserId: Long? = null,
+        senderFullname: String? = null
     ) = SendEmailRequest(
         siteId = 1,
-        sender = Sender(userId = senderUserId),
+        sender = Sender(userId = senderUserId, fullName = senderFullname),
         recipient = Address("Ray Sponsible", "ray.sponsible@gmail.com"),
         contentType = "text/plain",
         contentLanguage = "fr",
@@ -243,9 +235,5 @@ internal class SendControllerTest {
         displayName = "Test Site",
         websiteUrl = "https://www.test.com",
         attributes = attributes
-    )
-
-    private fun createUser() = User(
-        fullName = "Roger Milla"
     )
 }

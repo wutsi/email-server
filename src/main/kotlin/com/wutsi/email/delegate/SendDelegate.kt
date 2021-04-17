@@ -7,7 +7,6 @@ import com.wutsi.email.service.EmailBodyComposer
 import com.wutsi.email.service.EmailStyleEnhancer
 import com.wutsi.site.SiteApi
 import com.wutsi.site.dto.Site
-import com.wutsi.user.UserApi
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -21,7 +20,6 @@ import javax.mail.internet.MimeMessage
 public class SendDelegate(
     @Autowired private val sender: JavaMailSender,
     @Autowired private val dao: UnsubscribedRepository,
-    @Autowired private val userApi: UserApi,
     @Autowired private val siteApi: SiteApi,
     @Autowired private val bodyComposer: EmailBodyComposer,
     @Autowired private val styleEnhancer: EmailStyleEnhancer,
@@ -89,10 +87,10 @@ public class SendDelegate(
         ).isPresent
 
     private fun fromDisplayName(request: SendEmailRequest, site: Site): String? {
-        return if (request.sender.userId != null)
-            userApi.get(request.sender.userId).user.fullName
-        else
+        return if (request.sender.fullName.isNullOrEmpty())
             site.displayName
+        else
+            request.sender.fullName
     }
 
     private fun sesConfigSet(site: Site): String? =
