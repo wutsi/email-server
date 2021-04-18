@@ -39,7 +39,7 @@ public class SendDelegate(
             return
         }
 
-        LOGGER.info("site_id=${request.siteId} campaign=${request.campaign} recipient_email=${request.recipient.email} - Sending email")
+        LOGGER.info("site_id=${request.siteId} campaign=${request.campaign} recipient_email=${request.recipient.email} subject=${request.subject} - Sending email")
         val site = siteApi.get(request.siteId).site
         val message = createMessage(request, site)
         sender.send(message)

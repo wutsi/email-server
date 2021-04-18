@@ -15,6 +15,9 @@ spring:
     port: ${SMTP_PORT}
     username: ${SMTP_USER}
     password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        debug: false
 
 rabbitmq:
   enabled: true
