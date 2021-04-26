@@ -34,8 +34,12 @@ public class SendDelegate(
     }
 
     public fun invoke(request: SendEmailRequest) {
+        if (request.recipient.email.isNullOrEmpty()) {
+            LOGGER.warn("site_id=${request.siteId} campaign=${request.campaign} recipient_email=${request.recipient.email} - No receipient email")
+            return
+        }
         if (isUnsubscribed(request)) {
-            LOGGER.info("site_id=${request.siteId} campaign=${request.campaign} recipient_email=${request.recipient.email} - User has unsubscribed from the list")
+            LOGGER.warn("site_id=${request.siteId} campaign=${request.campaign} recipient_email=${request.recipient.email} - User has unsubscribed from the list")
             return
         }
 

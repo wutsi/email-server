@@ -96,6 +96,15 @@ internal class SendControllerTest {
     }
 
     @Test
+    fun `Nothing sent when email is empty`() {
+        val request = createSendEmailRequest(email = "")
+
+        rest.postForEntity(url, request, Any::class.java)
+
+        assertEquals(0, smtp.receivedMessages.size)
+    }
+
+    @Test
     fun `Unsubscription headers not available when site has not unsubscription-email`() {
         val site = createSite(
             id = 777L,
@@ -210,11 +219,12 @@ internal class SendControllerTest {
     private fun createSendEmailRequest(
         campaign: String? = null,
         senderUserId: Long? = null,
-        senderFullname: String? = null
+        senderFullname: String? = null,
+        email: String = "ray.sponsible@gmail.com"
     ) = SendEmailRequest(
         siteId = 1,
         sender = Sender(userId = senderUserId, fullName = senderFullname),
-        recipient = Address("Ray Sponsible", "ray.sponsible@gmail.com"),
+        recipient = Address("Ray Sponsible", email),
         contentType = "text/plain",
         contentLanguage = "fr",
         body = "Yo man",
