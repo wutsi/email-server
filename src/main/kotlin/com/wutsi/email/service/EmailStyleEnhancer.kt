@@ -49,6 +49,10 @@ class EmailStyleEnhancer {
 
             ".x-small" to """
                 font-size: x-small;
+            """.trimIndent(),
+
+            ".no-margin" to """
+                margin: 0
             """.trimIndent()
         )
     }
