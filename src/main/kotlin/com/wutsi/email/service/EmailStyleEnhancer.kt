@@ -53,6 +53,14 @@ class EmailStyleEnhancer {
 
             ".no-margin" to """
                 margin: 0
+            """.trimIndent(),
+
+            ".border" to """
+                border: 1px solid lightgray;
+            """.trimIndent(),
+
+            ".rounded" to """
+                border-radius: 5px
             """.trimIndent()
         )
     }
