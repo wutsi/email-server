@@ -32,7 +32,7 @@
     <kotlin.version>1.4.31</kotlin.version>
     <kotlin-mockito.version>2.2.0</kotlin-mockito.version>
     <jackson-module-kotlin.version>2.12.2</jackson-module-kotlin.version>
-    <jackson-modules-java8.version>2.12.2</jackson-modules-java8.version>
+    <jackson-modules-java8.version>2.12.3</jackson-modules-java8.version>
     <jsoup.version>1.11.3</jsoup.version>
     <klint.version>0.40.0</klint.version>
     <maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
