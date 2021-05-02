@@ -36,7 +36,7 @@
     <jsoup.version>1.11.3</jsoup.version>
     <klint.version>0.41.0</klint.version>
     <maven-antrun-plugin.version>3.0.0</maven-antrun-plugin.version>
-    <mustache.version>0.9.4</mustache.version>
+    <mustache.version>0.9.7</mustache.version>
     <hikari-cp.version>4.0.3</hikari-cp.version>
     <postgresql.version>42.2.19</postgresql.version>
     <flyway.version>7.8.2</flyway.version>
