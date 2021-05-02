@@ -21,6 +21,9 @@ spring:
 
 rabbitmq:
   enabled: true
+security:
+  api-key:
+    id: ${API_KEY_ID}
 
 logging:
   pattern:

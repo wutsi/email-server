@@ -25,19 +25,16 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.jdbc.Sql
-import org.springframework.web.client.RestTemplate
 import javax.mail.internet.InternetAddress
 import kotlin.test.assertNull
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(value = ["/db/clean.sql", "/db/SendController.sql"])
-internal class SendControllerTest {
+internal class SendControllerTest : ControllerTestBase() {
     @LocalServerPort
     private val port = 0
 
     private lateinit var url: String
-
-    private val rest: RestTemplate = RestTemplate()
 
     @MockBean
     private lateinit var siteApi: SiteApi
@@ -45,7 +42,9 @@ internal class SendControllerTest {
     private var smtp: GreenMail = GreenMail(ServerSetup(2525, null, "smtp"))
 
     @BeforeEach
-    fun setUp() {
+    override fun setUp() {
+        super.setUp()
+
         smtp.setUser("username", "secret")
         smtp.start()
 
@@ -62,9 +61,11 @@ internal class SendControllerTest {
 
     @Test
     fun `send an email`() {
+        login("email")
+
         val request = createSendEmailRequest(campaign = "test-campaign")
 
-        val response = rest.postForEntity(url, request, Any::class.java)
+        val response = post(url, request, Any::class.java)
         assertEquals(HttpStatus.OK, response.statusCode)
 
         assertEquals(1, smtp.receivedMessages.size)
@@ -88,24 +89,30 @@ internal class SendControllerTest {
 
     @Test
     fun `X-WUTSI-CAMPAIGN header not available when not provided in the request`() {
+        login("email")
+
         val request = createSendEmailRequest(campaign = null)
 
-        rest.postForEntity(url, request, Any::class.java)
+        post(url, request, Any::class.java)
 
         assertNull(smtp.receivedMessages[0].getHeader(SendDelegate.HEADER_CAMPAIGN))
     }
 
     @Test
     fun `Nothing sent when email is empty`() {
+        login("email")
+
         val request = createSendEmailRequest(email = "")
 
-        rest.postForEntity(url, request, Any::class.java)
+        post(url, request, Any::class.java)
 
         assertEquals(0, smtp.receivedMessages.size)
     }
 
     @Test
     fun `Unsubscription headers not available when site has not unsubscription-email`() {
+        login("email")
+
         val site = createSite(
             id = 777L,
             attributes = listOf(
@@ -116,7 +123,7 @@ internal class SendControllerTest {
         doReturn(GetSiteResponse(site)).whenever(siteApi).get(any())
 
         val request = createSendEmailRequest()
-        rest.postForEntity(url, request, Any::class.java)
+        post(url, request, Any::class.java)
 
         assertNull(smtp.receivedMessages[0].getHeader("List-Unsubscribe"))
         assertNull(smtp.receivedMessages[0].getHeader("List-Unsubscribe-Post"))
@@ -124,6 +131,8 @@ internal class SendControllerTest {
 
     @Test
     fun `Unsubscription headers not available when site has not unsubscription-url`() {
+        login("email")
+
         val site = createSite(
             id = 777L,
             attributes = listOf(
@@ -134,7 +143,7 @@ internal class SendControllerTest {
         doReturn(GetSiteResponse(site)).whenever(siteApi).get(any())
 
         val request = createSendEmailRequest()
-        rest.postForEntity(url, request, Any::class.java)
+        post(url, request, Any::class.java)
 
         assertNull(smtp.receivedMessages[0].getHeader("List-Unsubscribe"))
         assertNull(smtp.receivedMessages[0].getHeader("List-Unsubscribe-Post"))
@@ -142,14 +151,18 @@ internal class SendControllerTest {
 
     @Test
     fun `sender displayName in FROM when provided in the request`() {
+        login("email")
+
         val request = createSendEmailRequest(senderFullname = "Roger Milla")
-        rest.postForEntity(url, request, Any::class.java)
+        post(url, request, Any::class.java)
 
         assertEquals(InternetAddress("no-reply@test.com", "Roger Milla"), smtp.receivedMessages[0].sender)
     }
 
     @Test
     fun `sender email in FROM is default when site has no FROM attribute`() {
+        login("email")
+
         val site = createSite(
             id = 777L,
             attributes = listOf(
@@ -160,13 +173,15 @@ internal class SendControllerTest {
         doReturn(GetSiteResponse(site)).whenever(siteApi).get(any())
 
         val request = createSendEmailRequest()
-        rest.postForEntity(url, request, Any::class.java)
+        post(url, request, Any::class.java)
 
         assertEquals(InternetAddress("no-reply@wutsi.com", "Test Site"), smtp.receivedMessages[0].sender)
     }
 
     @Test
     fun `do not send email to user unsubscribed from site list`() {
+        login("email")
+
         val request = SendEmailRequest(
             siteId = 100,
             recipient = Address("Ray Sponsible", "ray.sponsible@gmail.com"),
@@ -175,13 +190,15 @@ internal class SendControllerTest {
             body = "Yo man",
             subject = "test"
         )
-        val response = rest.postForEntity(url, request, Any::class.java)
+        val response = post(url, request, Any::class.java)
         assertEquals(HttpStatus.OK, response.statusCode)
         assertEquals(0, smtp.receivedMessages.size)
     }
 
     @Test
     fun `do not send email to user unsubscribed from blog list`() {
+        login("email")
+
         val request = SendEmailRequest(
             siteId = 200,
             sender = Sender(userId = 2L),
@@ -191,13 +208,15 @@ internal class SendControllerTest {
             body = "Yo man",
             subject = "test"
         )
-        val response = rest.postForEntity(url, request, Any::class.java)
+        val response = post(url, request, Any::class.java)
         assertEquals(HttpStatus.OK, response.statusCode)
         assertEquals(0, smtp.receivedMessages.size)
     }
 
     @Test
     fun `message variable a replaces`() {
+        login("email")
+
         val request = SendEmailRequest(
             siteId = 1,
             sender = Sender(userId = 2L),
@@ -208,7 +227,7 @@ internal class SendControllerTest {
             campaign = "c001",
             body = "Hello world".trimIndent()
         )
-        rest.postForEntity(url, request, Any::class.java)
+        post(url, request, Any::class.java)
 
         IOUtils.toString(smtp.receivedMessages[0].inputStream)
         val expected = IOUtils.toString(SendControllerTest::class.java.getResourceAsStream("/SendController/email.html"), "utf-8")
