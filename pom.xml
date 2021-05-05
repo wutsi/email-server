@@ -21,7 +21,7 @@
   <properties>
     <jacoco.threshold.line>0.90</jacoco.threshold.line>
     <jacoco.threshold.class>0.90</jacoco.threshold.class>
-    <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
+    <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
     <jdk.version>11</jdk.version>
 
     <commons-io.version>2.8.0</commons-io.version>
@@ -29,16 +29,16 @@
     <greenmail.version>1.6.3</greenmail.version>
     <javax-validation.version>2.0.1.Final</javax-validation.version>
     <junit.version>5.7.1</junit.version>
-    <kotlin.version>1.4.31</kotlin.version>
+    <kotlin.version>1.5.0</kotlin.version>
     <kotlin-mockito.version>2.2.0</kotlin-mockito.version>
     <jackson-module-kotlin.version>2.12.3</jackson-module-kotlin.version>
     <jackson-modules-java8.version>2.12.3</jackson-modules-java8.version>
-    <jsoup.version>1.11.3</jsoup.version>
+    <jsoup.version>1.13.1</jsoup.version>
     <klint.version>0.41.0</klint.version>
     <maven-antrun-plugin.version>3.0.0</maven-antrun-plugin.version>
-    <mustache.version>0.9.4</mustache.version>
+    <mustache.version>0.9.7</mustache.version>
     <hikari-cp.version>4.0.3</hikari-cp.version>
-    <postgresql.version>42.2.19</postgresql.version>
+    <postgresql.version>42.2.20</postgresql.version>
     <flyway.version>7.8.2</flyway.version>
 
     <wutsi-email-sdk.version>1.3.0</wutsi-email-sdk.version>
