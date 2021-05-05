@@ -73,6 +73,9 @@ spring:
 memcached:
   enabled: false
   ttl: ${SPRING_CACHE_TTL:60}  # Cache for detecting re-sent email. We cannot resent the same email within 60s
+  username: ${MEMCACHIER_USERNAME}
+  password: ${MEMCACHIER_PASSWORD}
+  servers: ${MEMCACHIER_SERVERS}
 rabbitmq:
   enabled: false
   url: ${CLOUDAMQP_URL}
