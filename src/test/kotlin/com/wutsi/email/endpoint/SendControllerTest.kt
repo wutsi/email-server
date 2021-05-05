@@ -4,6 +4,9 @@ import com.icegreen.greenmail.util.GreenMail
 import com.icegreen.greenmail.util.ServerSetup
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.eq
+import com.nhaarman.mockitokotlin2.never
+import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import com.wutsi.email.SiteAttribute
 import com.wutsi.email.delegate.SendDelegate
@@ -23,6 +26,8 @@ import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.cache.Cache
+import org.springframework.cache.CacheManager
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.jdbc.Sql
 import javax.mail.internet.InternetAddress
@@ -39,6 +44,12 @@ internal class SendControllerTest : ControllerTestBase() {
     @MockBean
     private lateinit var siteApi: SiteApi
 
+    @MockBean
+    private lateinit var cacheManager: CacheManager
+
+    @MockBean
+    private lateinit var cache: Cache
+
     private var smtp: GreenMail = GreenMail(ServerSetup(2525, null, "smtp"))
 
     @BeforeEach
@@ -52,6 +63,9 @@ internal class SendControllerTest : ControllerTestBase() {
 
         val site = createSite()
         doReturn(GetSiteResponse(site)).whenever(siteApi).get(any())
+
+        doReturn(null).whenever(cache).get(any(), eq(String::class.java))
+        doReturn(cache).whenever(cacheManager).getCache(any())
     }
 
     @AfterEach
@@ -85,6 +99,33 @@ internal class SendControllerTest : ControllerTestBase() {
             "<mailto:unsubscribe@test.com>,<https://www.test.com/unsubscribe?email=ray.sponsible@gmail.com>",
             message.getHeader("List-Unsubscribe")[0]
         )
+    }
+
+    @Test
+    fun `send an email are cached`() {
+        login("email")
+
+        val request = createSendEmailRequest(campaign = "test-campaign")
+
+        val response = post(url, request, Any::class.java)
+        assertEquals(HttpStatus.OK, response.statusCode)
+
+        verify(cache).put(any(), eq("1"))
+    }
+
+    @Test
+    fun `do not re-send the same email when cached`() {
+        login("email")
+
+        doReturn("1").whenever(cache).get(any(), eq(String::class.java))
+
+        val request = createSendEmailRequest(campaign = "test-campaign")
+
+        val response = post(url, request, Any::class.java)
+        assertEquals(HttpStatus.OK, response.statusCode)
+
+        assertEquals(0, smtp.receivedMessages.size)
+        verify(cache, never()).put(any(), any())
     }
 
     @Test

@@ -19,6 +19,8 @@ spring:
       mail:
         debug: false
 
+memcached:
+  enabled: true
 rabbitmq:
   enabled: true
 security:

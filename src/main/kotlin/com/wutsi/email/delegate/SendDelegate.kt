@@ -10,8 +10,11 @@ import com.wutsi.site.dto.Site
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.cache.CacheManager
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.stereotype.Service
+import org.springframework.util.DigestUtils
+import java.nio.charset.Charset
 import javax.mail.Message
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
@@ -23,6 +26,7 @@ public class SendDelegate(
     @Autowired private val siteApi: SiteApi,
     @Autowired private val bodyComposer: EmailBodyComposer,
     @Autowired private val styleEnhancer: EmailStyleEnhancer,
+    @Autowired private val cacheManager: CacheManager,
     @Value("\${spring.mail.properties.mail.smtp.from}") private val from: String
 
 ) {
@@ -34,6 +38,31 @@ public class SendDelegate(
     }
 
     public fun invoke(request: SendEmailRequest) {
+        if (wasEmailRecentlySent(request))
+            return
+
+        send(request)
+        emailSent(request)
+    }
+
+    private fun wasEmailRecentlySent(request: SendEmailRequest): Boolean {
+        val key = cacheKey(request)
+        return cacheManager.getCache("default").get(key, String::class.java) != null
+    }
+
+    private fun emailSent(request: SendEmailRequest) {
+        val key = cacheKey(request)
+        cacheManager.getCache("default").put(key, "1")
+    }
+
+    private fun cacheKey(request: SendEmailRequest): String {
+        val key = request.recipient.email.toLowerCase() + " " +
+            request.subject.toLowerCase() + " " +
+            request.siteId
+        return "email_" + DigestUtils.md5DigestAsHex(key.toByteArray(Charset.defaultCharset()))
+    }
+
+    private fun send(request: SendEmailRequest) {
         if (request.recipient.email.isNullOrEmpty()) {
             LOGGER.warn("site_id=${request.siteId} campaign=${request.campaign} recipient_email=${request.recipient.email} - No receipient email")
             return

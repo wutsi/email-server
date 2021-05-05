@@ -19,6 +19,7 @@ java -jar ${CODEGEN_JAR} server \
     -heroku wutsi-${API_NAME} \
     -service_logger \
     -service_database \
+    -service_cache \
     -service_mqueue
 
 if [ $? -eq 0 ]

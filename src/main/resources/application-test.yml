@@ -16,6 +16,8 @@ spring:
     username: ${MAILGUN_SMTP_LOGIN}
     password: ${MAILGUN_SMTP_PASSWORD}
 
+memcached:
+  enabled: true
 rabbitmq:
   enabled: true
 security:

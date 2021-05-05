@@ -1,6 +1,7 @@
 package com.wutsi.email
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.cache.`annotation`.EnableCaching
 import org.springframework.scheduling.`annotation`.EnableAsync
 import org.springframework.scheduling.`annotation`.EnableScheduling
 import org.springframework.security.config.`annotation`.method.configuration.EnableGlobalMethodSecurity
@@ -11,6 +12,7 @@ import kotlin.String
 @SpringBootApplication
 @EnableAsync
 @EnableTransactionManagement
+@EnableCaching
 @EnableScheduling
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
