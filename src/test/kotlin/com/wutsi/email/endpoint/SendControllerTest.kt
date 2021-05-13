@@ -85,7 +85,7 @@ internal class SendControllerTest : ControllerTestBase() {
         assertEquals(1, smtp.receivedMessages.size)
 
         val message = smtp.receivedMessages[0]
-        val body = IOUtils.toString(message.inputStream)
+        val body = IOUtils.toString(message.inputStream, "utf-8")
         assertEquals(InternetAddress("no-reply@test.com", "Test Site"), message.sender)
         assertEquals(request.subject, message.subject)
         assertEquals(InternetAddress(request.recipient.email, request.recipient.displayName), message.allRecipients[0])
@@ -270,7 +270,7 @@ internal class SendControllerTest : ControllerTestBase() {
         )
         post(url, request, Any::class.java)
 
-        IOUtils.toString(smtp.receivedMessages[0].inputStream)
+        IOUtils.toString(smtp.receivedMessages[0].inputStream, "utf-8")
         val expected = IOUtils.toString(SendControllerTest::class.java.getResourceAsStream("/SendController/email.html"), "utf-8")
         // assertEquals(expected.trimIndent(), body.trimIndent())
         System.out.println(expected)

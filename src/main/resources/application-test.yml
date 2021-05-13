@@ -16,13 +16,15 @@ spring:
     username: ${MAILGUN_SMTP_LOGIN}
     password: ${MAILGUN_SMTP_PASSWORD}
 
-memcached:
-  enabled: true
-rabbitmq:
-  enabled: true
-security:
-  api-key:
-    id: ${API_KEY_ID}
+wutsi:
+  client-id: "email"
+  memcached:
+    enabled: true
+  rabbitmq:
+    enabled: true
+  security:
+    api-key:
+      id: ${API_KEY_ID}
 
 logging:
   pattern:

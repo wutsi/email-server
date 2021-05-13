@@ -47,12 +47,12 @@ public class SendDelegate(
 
     private fun wasEmailRecentlySent(request: SendEmailRequest): Boolean {
         val key = cacheKey(request)
-        return cacheManager.getCache("default").get(key, String::class.java) != null
+        return cacheManager.getCache("default")?.get(key, String::class.java) != null
     }
 
     private fun emailSent(request: SendEmailRequest) {
         val key = cacheKey(request)
-        cacheManager.getCache("default").put(key, "1")
+        cacheManager.getCache("default")?.put(key, "1")
     }
 
     private fun cacheKey(request: SendEmailRequest): String {

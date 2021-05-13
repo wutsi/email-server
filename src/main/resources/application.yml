@@ -20,6 +20,10 @@ management:
 spring:
   main:
     lazy-initialization: false
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
 
   jackson:
     deserialization:
@@ -70,27 +74,29 @@ spring:
             enable: true
     test-connection: false
 
-memcached:
-  enabled: false
-  ttl: ${SPRING_CACHE_TTL:60}  # Cache for detecting re-sent email. We cannot resent the same email within 60s
-  username: ${MEMCACHIER_USERNAME}
-  password: ${MEMCACHIER_PASSWORD}
-  servers: ${MEMCACHIER_SERVERS}
-rabbitmq:
-  enabled: false
-  url: ${CLOUDAMQP_URL}
-  thread-pool-size: 8
-  max-retries: 3
-  queue-ttl-seconds: 86400       # 24 heures
-  replay-cron: "0 */15 * * * *"  # Replay DLQ every 15 mins
-security:
-  api-key:
-    id: "00000"
-    header: "Authorization"
+wutsi:
+  client-id: "email"
+  memcached:
+    enabled: false
+    username: ${MEMCACHIER_USERNAME}
+    password: ${MEMCACHIER_PASSWORD}
+    servers: ${MEMCACHIER_SERVERS}
+    ttl: ${SPRING_CACHE_TTL:86400}
+  rabbitmq:
+    enabled: false
+    url: ${CLOUDAMQP_URL}
+    thread-pool-size: 8
+    max-retries: 10
+    queue-ttl-seconds: 86400       # 24 heures
+    replay-cron: "0 */15 * * * *"  # Replay DLQ every 15 mins
+  security:
+    api-key:
+      id: "00000"
 
 logging:
   level:
     root: INFO
+    com.wutsi.email: DEBUG
   pattern:
     console: "%d type=%level logger=%class{20} thread=%thread request_id=%X{request_id} client_id=%X{client_id} device_id=%X{device_id} :%m%n"
     file: "%d type=%level logger=%class{20} thread=%thread request_id=%X{request_id} client_id=%X{client_id} device_id=%X{device_id} :%m%n"
