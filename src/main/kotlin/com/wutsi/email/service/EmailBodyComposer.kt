@@ -1,8 +1,8 @@
 package com.wutsi.email.service
 
 import com.github.mustachejava.DefaultMustacheFactory
-import com.wutsi.email.SiteAttribute
 import com.wutsi.email.dto.SendEmailRequest
+import com.wutsi.site.SiteAttribute
 import com.wutsi.site.dto.Site
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -76,7 +76,7 @@ class EmailBodyComposer {
     }
 
     public fun unsubscribeUrl(request: SendEmailRequest, site: Site): String? {
-        val url = site.attributes.find { it.urn == SiteAttribute.UNSUBSCRIBED_URL.urn }?.value ?: return null
+        val url = site.attributes.find { it.urn == SiteAttribute.EMAIL_UNSUBSCRIBED_URL.urn }?.value ?: return null
 
         var params = "email=${request.recipient.email}"
         if (request.sender.userId != null)
@@ -89,5 +89,5 @@ class EmailBodyComposer {
     }
 
     private fun smallLogoUrl(site: Site): String? =
-        site.attributes.find { it.urn == SiteAttribute.SMALL_LOGO_URL.urn }?.value
+        site.attributes.find { it.urn == SiteAttribute.EMAIL_SMALL_LOGO_URL.urn }?.value
 }

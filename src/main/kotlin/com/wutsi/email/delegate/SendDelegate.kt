@@ -1,11 +1,11 @@
 package com.wutsi.email.`delegate`
 
-import com.wutsi.email.SiteAttribute
 import com.wutsi.email.dao.UnsubscribedRepository
 import com.wutsi.email.dto.SendEmailRequest
 import com.wutsi.email.service.EmailBodyComposer
 import com.wutsi.email.service.EmailStyleEnhancer
 import com.wutsi.site.SiteApi
+import com.wutsi.site.SiteAttribute
 import com.wutsi.site.dto.Site
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -130,10 +130,10 @@ public class SendDelegate(
         "ses-wutsi"
 
     private fun fromEmail(site: Site): String =
-        site.attributes.find { it.urn == SiteAttribute.FROM.urn }?.value ?: this.from
+        site.attributes.find { it.urn == SiteAttribute.EMAIL_FROM.urn }?.value ?: this.from
 
     private fun unsubscribeEmail(site: Site): String? =
-        site.attributes.find { it.urn == SiteAttribute.UNSUBSCRIBED_EMAIL.urn }?.value
+        site.attributes.find { it.urn == SiteAttribute.EMAIL_UNSUBSCRIBED_EMAIL.urn }?.value
 
     private fun unsubscribeUrl(request: SendEmailRequest, site: Site): String? =
         bodyComposer.unsubscribeUrl(request, site)

@@ -8,12 +8,12 @@ import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
-import com.wutsi.email.SiteAttribute
 import com.wutsi.email.delegate.SendDelegate
 import com.wutsi.email.dto.Address
 import com.wutsi.email.dto.SendEmailRequest
 import com.wutsi.email.dto.Sender
 import com.wutsi.site.SiteApi
+import com.wutsi.site.SiteAttribute
 import com.wutsi.site.dto.Attribute
 import com.wutsi.site.dto.GetSiteResponse
 import com.wutsi.site.dto.Site
@@ -157,8 +157,8 @@ internal class SendControllerTest : ControllerTestBase() {
         val site = createSite(
             id = 777L,
             attributes = listOf(
-                Attribute(SiteAttribute.UNSUBSCRIBED_URL.urn, "https://www.test.com/unsubscribe"),
-                Attribute(SiteAttribute.FROM.urn, "no-reply@test.com")
+                Attribute(SiteAttribute.EMAIL_UNSUBSCRIBED_URL.urn, "https://www.test.com/unsubscribe"),
+                Attribute(SiteAttribute.EMAIL_FROM.urn, "no-reply@test.com")
             )
         )
         doReturn(GetSiteResponse(site)).whenever(siteApi).get(any())
@@ -177,8 +177,8 @@ internal class SendControllerTest : ControllerTestBase() {
         val site = createSite(
             id = 777L,
             attributes = listOf(
-                Attribute(SiteAttribute.UNSUBSCRIBED_EMAIL.urn, "unsubscribe.test.com"),
-                Attribute(SiteAttribute.FROM.urn, "no-reply@test.com")
+                Attribute(SiteAttribute.EMAIL_UNSUBSCRIBED_EMAIL.urn, "unsubscribe.test.com"),
+                Attribute(SiteAttribute.EMAIL_FROM.urn, "no-reply@test.com")
             )
         )
         doReturn(GetSiteResponse(site)).whenever(siteApi).get(any())
@@ -207,8 +207,8 @@ internal class SendControllerTest : ControllerTestBase() {
         val site = createSite(
             id = 777L,
             attributes = listOf(
-                Attribute(SiteAttribute.UNSUBSCRIBED_EMAIL.urn, "unsubscribe.test.com"),
-                Attribute(SiteAttribute.UNSUBSCRIBED_EMAIL.urn, "unsubscribe.test.com")
+                Attribute(SiteAttribute.EMAIL_UNSUBSCRIBED_EMAIL.urn, "unsubscribe.test.com"),
+                Attribute(SiteAttribute.EMAIL_UNSUBSCRIBED_EMAIL.urn, "unsubscribe.test.com")
             )
         )
         doReturn(GetSiteResponse(site)).whenever(siteApi).get(any())
@@ -295,9 +295,9 @@ internal class SendControllerTest : ControllerTestBase() {
     private fun createSite(
         id: Long = 1L,
         attributes: List<Attribute> = listOf(
-            Attribute(SiteAttribute.UNSUBSCRIBED_EMAIL.urn, "unsubscribe@test.com"),
-            Attribute(SiteAttribute.UNSUBSCRIBED_URL.urn, "https://www.test.com/unsubscribe"),
-            Attribute(SiteAttribute.FROM.urn, "no-reply@test.com")
+            Attribute(SiteAttribute.EMAIL_UNSUBSCRIBED_EMAIL.urn, "unsubscribe@test.com"),
+            Attribute(SiteAttribute.EMAIL_UNSUBSCRIBED_URL.urn, "https://www.test.com/unsubscribe"),
+            Attribute(SiteAttribute.EMAIL_FROM.urn, "no-reply@test.com")
         )
     ) = Site(
         id = id,

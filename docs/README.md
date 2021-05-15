@@ -1,3 +1,3 @@
-- [Site Configuration](Configuration.md)
+- [Site Configuration](https://wutsi.github.io/site-server/Configuration)
 - [Events](Event.md)
 - [API](https://wutsi.github.io/email-server/api/)
