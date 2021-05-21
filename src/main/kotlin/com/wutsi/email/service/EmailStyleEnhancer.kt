@@ -61,7 +61,13 @@ class EmailStyleEnhancer {
 
             ".rounded" to """
                 border-radius: 5px
+            """.trimIndent(),
+
+            ".box-highlight" to """
+                background: #e4edf7;
+                border: 1px solid ##1D7EDF;
             """.trimIndent()
+
         )
     }
 
