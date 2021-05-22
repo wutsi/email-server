@@ -15,6 +15,9 @@ spring:
     port: ${MAILGUN_SMTP_PORT}
     username: ${MAILGUN_SMTP_LOGIN}
     password: ${MAILGUN_SMTP_PASSWORD}
+    properties:
+      mail:
+        debug: false
 
 wutsi:
   client-id: "email"
