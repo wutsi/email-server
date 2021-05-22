@@ -81,7 +81,7 @@ wutsi:
     username: ${MEMCACHIER_USERNAME}
     password: ${MEMCACHIER_PASSWORD}
     servers: ${MEMCACHIER_SERVERS}
-    ttl: ${SPRING_CACHE_TTL:86400}
+    ttl: ${SPRING_CACHE_TTL:60}
   rabbitmq:
     enabled: false
     url: ${CLOUDAMQP_URL}

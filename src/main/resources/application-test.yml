@@ -20,7 +20,6 @@ spring:
         debug: false
 
 wutsi:
-  client-id: "email"
   memcached:
     enabled: true
   rabbitmq:
