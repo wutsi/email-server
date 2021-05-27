@@ -4,7 +4,7 @@ import com.wutsi.email.dao.UnsubscribedRepository
 import com.wutsi.email.dto.SendEmailRequest
 import com.wutsi.email.service.EmailBodyComposer
 import com.wutsi.email.service.EmailStyleEnhancer
-import com.wutsi.site.SiteApi
+import com.wutsi.platform.site.SiteProvider
 import com.wutsi.site.SiteAttribute
 import com.wutsi.site.dto.Site
 import org.slf4j.LoggerFactory
@@ -23,7 +23,7 @@ import javax.mail.internet.MimeMessage
 public class SendDelegate(
     @Autowired private val sender: JavaMailSender,
     @Autowired private val dao: UnsubscribedRepository,
-    @Autowired private val siteApi: SiteApi,
+    @Autowired private val siteProvider: SiteProvider,
     @Autowired private val bodyComposer: EmailBodyComposer,
     @Autowired private val styleEnhancer: EmailStyleEnhancer,
     @Autowired private val cacheManager: CacheManager,
@@ -64,7 +64,7 @@ public class SendDelegate(
 
     private fun send(request: SendEmailRequest) {
         if (request.recipient.email.isNullOrEmpty()) {
-            LOGGER.warn("site_id=${request.siteId} campaign=${request.campaign} recipient_email=${request.recipient.email} - No receipient email")
+            LOGGER.warn("site_id=${request.siteId} campaign=${request.campaign} recipient_email=${request.recipient.email} - No recipient email")
             return
         }
         if (isUnsubscribed(request)) {
@@ -73,7 +73,7 @@ public class SendDelegate(
         }
 
         LOGGER.info("site_id=${request.siteId} campaign=${request.campaign} recipient_email=${request.recipient.email} subject=${request.subject} - Sending email")
-        val site = siteApi.get(request.siteId).site
+        val site = siteProvider.get(request.siteId)
         val message = createMessage(request, site)
         sender.send(message)
     }

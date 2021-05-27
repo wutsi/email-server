@@ -12,10 +12,9 @@ import com.wutsi.email.delegate.SendDelegate
 import com.wutsi.email.dto.Address
 import com.wutsi.email.dto.SendEmailRequest
 import com.wutsi.email.dto.Sender
-import com.wutsi.site.SiteApi
+import com.wutsi.platform.site.SiteProvider
 import com.wutsi.site.SiteAttribute
 import com.wutsi.site.dto.Attribute
-import com.wutsi.site.dto.GetSiteResponse
 import com.wutsi.site.dto.Site
 import org.apache.commons.io.IOUtils
 import org.junit.jupiter.api.AfterEach
@@ -42,7 +41,7 @@ internal class SendControllerTest : ControllerTestBase() {
     private lateinit var url: String
 
     @MockBean
-    private lateinit var siteApi: SiteApi
+    private lateinit var siteProvider: SiteProvider
 
     @MockBean
     private lateinit var cacheManager: CacheManager
@@ -62,7 +61,7 @@ internal class SendControllerTest : ControllerTestBase() {
         url = "http://127.0.0.1:$port/v1/emails"
 
         val site = createSite()
-        doReturn(GetSiteResponse(site)).whenever(siteApi).get(any())
+        doReturn(site).whenever(siteProvider).get(any())
 
         doReturn(null).whenever(cache).get(any(), eq(String::class.java))
         doReturn(cache).whenever(cacheManager).getCache(any())
@@ -161,7 +160,7 @@ internal class SendControllerTest : ControllerTestBase() {
                 Attribute(SiteAttribute.EMAIL_FROM.urn, "no-reply@test.com")
             )
         )
-        doReturn(GetSiteResponse(site)).whenever(siteApi).get(any())
+        doReturn(site).whenever(siteProvider).get(any())
 
         val request = createSendEmailRequest()
         post(url, request, Any::class.java)
@@ -181,7 +180,7 @@ internal class SendControllerTest : ControllerTestBase() {
                 Attribute(SiteAttribute.EMAIL_FROM.urn, "no-reply@test.com")
             )
         )
-        doReturn(GetSiteResponse(site)).whenever(siteApi).get(any())
+        doReturn(site).whenever(siteProvider).get(any())
 
         val request = createSendEmailRequest()
         post(url, request, Any::class.java)
@@ -211,7 +210,7 @@ internal class SendControllerTest : ControllerTestBase() {
                 Attribute(SiteAttribute.EMAIL_UNSUBSCRIBED_EMAIL.urn, "unsubscribe.test.com")
             )
         )
-        doReturn(GetSiteResponse(site)).whenever(siteApi).get(any())
+        doReturn(site).whenever(siteProvider).get(any())
 
         val request = createSendEmailRequest()
         post(url, request, Any::class.java)

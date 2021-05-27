@@ -42,7 +42,7 @@
     <wutsi-newsletter-sdk.version>1.0.0</wutsi-newsletter-sdk.version>
     <wutsi-spring-memcached.version>1.1.0</wutsi-spring-memcached.version>
     <wutsi-stats-sdk.version>1.1.0</wutsi-stats-sdk.version>
-    <wutsi-platform.version>1.1.1</wutsi-platform.version>
+    <wutsi-platform.version>1.1.7</wutsi-platform.version>
   </properties>
 
   <dependencies>
