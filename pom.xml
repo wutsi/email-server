@@ -29,7 +29,7 @@
     <greenmail.version>1.6.4</greenmail.version>
     <javax-validation.version>2.0.1.Final</javax-validation.version>
     <junit.version>5.7.2</junit.version>
-    <kotlin.version>1.5.0</kotlin.version>
+    <kotlin.version>1.5.10</kotlin.version>
     <kotlin-mockito.version>2.2.0</kotlin-mockito.version>
     <jsoup.version>1.13.1</jsoup.version>
     <klint.version>0.41.0</klint.version>
