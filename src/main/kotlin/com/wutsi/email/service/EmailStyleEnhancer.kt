@@ -9,7 +9,12 @@ import org.springframework.stereotype.Service
 class EmailStyleEnhancer {
     companion object {
         private val STYLES = mapOf(
+            ".main" to """
+                background: #f8f8f8;
+            """.trimIndent(),
+
             ".content" to """
+                border: 1px solid lightgray;
                 background: white;
                 font-family: 'PT Sans', sans-serif;
                 font-size: 1em; margin: 0 auto;
