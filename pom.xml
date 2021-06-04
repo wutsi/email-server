@@ -24,17 +24,17 @@
     <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
     <jdk.version>11</jdk.version>
 
-    <commons-io.version>2.8.0</commons-io.version>
+    <commons-io.version>2.9.0</commons-io.version>
     <commons-text.version>1.9</commons-text.version>
     <greenmail.version>1.6.4</greenmail.version>
     <javax-validation.version>2.0.1.Final</javax-validation.version>
     <junit.version>5.7.2</junit.version>
-    <kotlin.version>1.5.0</kotlin.version>
+    <kotlin.version>1.5.10</kotlin.version>
     <kotlin-mockito.version>2.2.0</kotlin-mockito.version>
     <jsoup.version>1.13.1</jsoup.version>
     <klint.version>0.41.0</klint.version>
     <maven-antrun-plugin.version>3.0.0</maven-antrun-plugin.version>
-    <mustache.version>0.9.7</mustache.version>
+    <mustache.version>0.9.10</mustache.version>
     <hikari-cp.version>4.0.3</hikari-cp.version>
     <postgresql.version>42.2.20</postgresql.version>
     <flyway.version>7.9.1</flyway.version>
