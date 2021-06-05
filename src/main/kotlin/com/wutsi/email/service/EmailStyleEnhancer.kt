@@ -64,6 +64,10 @@ class EmailStyleEnhancer {
                 border: 1px solid lightgray;
             """.trimIndent(),
 
+            ".border-top" to """
+                border-top: 1px solid lightgray;
+            """.trimIndent(),
+
             ".rounded" to """
                 border-radius: 5px
             """.trimIndent(),
