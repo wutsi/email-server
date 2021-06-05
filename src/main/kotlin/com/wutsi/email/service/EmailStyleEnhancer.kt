@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 class EmailStyleEnhancer {
     companion object {
         private val STYLES = mapOf(
-            ".main" to """
+            ".body" to """
                 background: #f8f8f8;
             """.trimIndent(),
 
