@@ -9,6 +9,23 @@ import org.springframework.stereotype.Service
 class EmailStyleEnhancer {
     companion object {
         private val STYLES = mapOf(
+            "h4" to """
+                font-size: 1.1em;
+            """.trimIndent(),
+            "h3" to """
+                font-size: 1.25em;
+            """.trimIndent(),
+            "h2" to """
+                font-size: 1.5em;
+            """.trimIndent(),
+            "h1" to """
+                font-size: 1.75em;
+            """.trimIndent(),
+
+            ".social" to """
+                text-decoration: none
+            """.trimIndent(),
+
             ".body" to """
                 background: #f8f8f8;
             """.trimIndent(),
@@ -17,7 +34,8 @@ class EmailStyleEnhancer {
                 border: 1px solid lightgray;
                 background: white;
                 font-family: 'PT Sans', sans-serif;
-                font-size: 1em; margin: 0 auto;
+                font-size: 1em;
+                margin: 0 auto;
                 max-width: 600px;
             """.trimIndent(),
 
