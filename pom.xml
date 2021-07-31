@@ -32,7 +32,7 @@
     <kotlin.version>1.5.21</kotlin.version>
     <kotlin-mockito.version>2.2.0</kotlin-mockito.version>
     <jsoup.version>1.14.1</jsoup.version>
-    <klint.version>0.41.0</klint.version>
+    <klint.version>0.42.0</klint.version>
     <maven-antrun-plugin.version>3.0.0</maven-antrun-plugin.version>
     <mustache.version>0.9.10</mustache.version>
     <hikari-cp.version>5.0.0</hikari-cp.version>
