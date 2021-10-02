@@ -31,7 +31,7 @@
     <junit.version>5.7.2</junit.version>
     <kotlin.version>1.5.31</kotlin.version>
     <kotlin-mockito.version>2.2.0</kotlin-mockito.version>
-    <jsoup.version>1.14.2</jsoup.version>
+    <jsoup.version>1.14.3</jsoup.version>
     <klint.version>0.42.1</klint.version>
     <maven-antrun-plugin.version>3.0.0</maven-antrun-plugin.version>
     <mustache.version>0.9.10</mustache.version>
