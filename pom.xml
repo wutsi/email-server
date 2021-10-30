@@ -36,7 +36,7 @@
     <maven-antrun-plugin.version>3.0.0</maven-antrun-plugin.version>
     <mustache.version>0.9.10</mustache.version>
     <hikari-cp.version>5.0.0</hikari-cp.version>
-    <postgresql.version>42.3.0</postgresql.version>
+    <postgresql.version>42.3.1</postgresql.version>
     <flyway.version>8.0.2</flyway.version>
 
     <wutsi-newsletter-sdk.version>1.0.0</wutsi-newsletter-sdk.version>
